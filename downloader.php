@@ -12,14 +12,14 @@ ini_set('memory_limit', '512M');
 // Define constants
 const JSON_FILE = 'cbn_circulars.json';
 const PDF_DIR = 'pdf_downloads/';
-const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
 
 /**
  * Load circular data from JSON file
  *
  * @return array|null Array of circular data or null on failure
  */
-function loadCircularsData() {
+function loadCircularsData(): ?array
+{
     if (!file_exists(JSON_FILE)) {
         echo "JSON file not found: " . JSON_FILE . "\n";
         echo "Please run extract_circulars.php first\n";
@@ -60,7 +60,6 @@ function downloadPdf(string $url, string $savePath): bool
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
     curl_setopt($ch, CURLOPT_TIMEOUT, 300); // 5-minute timeout per file
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/pdf,application/octet-stream',
@@ -143,7 +142,8 @@ function updateJsonFile(array $data): bool
  * @param string $filePath Path to the PDF file
  * @return bool Whether the file is a valid PDF
  */
-function isValidPdf($filePath) {
+function isValidPdf(string $filePath): bool
+{
     if (!file_exists($filePath) || filesize($filePath) < 5) {
         return false;
     }
@@ -184,22 +184,22 @@ try {
 
     foreach ($circulars as $key => $circular) {
         // Get URL from the circular data
-        $pdfUrl = isset($circular['pdf_url']) ? $circular['pdf_url'] : '';
+        $pdfUrl = $circular['pdf_url'] ?? '';
 
         if (empty($pdfUrl)) {
-            echo "Skipping circular without PDF URL: " . (isset($circular['title']) ? $circular['title'] : 'Unknown') . "\n";
+            echo "Skipping circular without PDF URL: " . ($circular['title'] ?? 'Unknown') . "\n";
             $circulars[$key]['downloaded'] = false;
             $circulars[$key]['download_error'] = "No PDF URL";
             $failCount++;
             continue;
         }
 
-        $fileName = isset($circular['file_name']) ? $circular['file_name'] : basename($pdfUrl);
+        $fileName = $circular['file_name'] ?? basename($pdfUrl);
         $savePath = PDF_DIR . $fileName;
 
-        echo "\nProcessing ({$key}/$totalPdfs): {$fileName}\n";
+        echo "\nProcessing ($key/$totalPdfs): $fileName\n";
 
-        // Check if file already exists and is valid
+        // Check if a file already exists and is valid
         if (file_exists($savePath) && isValidPdf($savePath)) {
             echo "File already exists and appears valid, skipping\n";
             $circulars[$key]['downloaded'] = true;
@@ -210,7 +210,7 @@ try {
 
         // Try to download the PDF
         if (downloadPdf($pdfUrl, $savePath)) {
-            // Verify file was downloaded and is valid
+            // Verify the file was downloaded and is valid
             if (file_exists($savePath) && isValidPdf($savePath)) {
                 $circulars[$key]['downloaded'] = true;
                 $circulars[$key]['download_time'] = date('Y-m-d H:i:s');
