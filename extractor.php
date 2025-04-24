@@ -59,10 +59,6 @@ function extractCirculars(): array
         die("Failed to fetch content from the API endpoint\n");
     }
 
-    // Save raw API response for debugging
-    file_put_contents('debug_api_response.json', $response);
-    echo "Saved raw API response to debug_api_response.json for inspection\n";
-
     // Try to decode JSON response
     $data = json_decode($response, true);
 
