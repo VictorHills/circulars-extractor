@@ -53,8 +53,8 @@ This will:
 
 ```
 ├── cbn_circulars.json       # Output JSON file
-├── exctractor.php    # Script to extract circular data
-├── downloader.php   # Script to download PDF files
+├── exctractor.php           # Script to extract circular data
+├── downloader.php           # Script to download PDF files
 ├── run_circulars.sh         # Shell script to automate the process
 └── pdf_downloads/           # Folder containing downloaded PDFs
 ```
