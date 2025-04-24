@@ -30,8 +30,8 @@ JSON file, and download all linked PDF documents.
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/cbn-circulars-scraper.git
-   cd cbn-circulars-scraper
+   git clone https://github.com/VictorHills/circulars-extractor.git
+   cd circulars-extractor
    ```
 
 2. **Make Shell Script Executable**
