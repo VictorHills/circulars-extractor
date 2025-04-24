@@ -59,6 +59,13 @@ This will:
 └── pdf_downloads/           # Folder containing downloaded PDFs
 ```
 
+> **Note:** This project also contains a Google Gemini questioner, 
+> remember to add `YOUR_GEMINI_API_KEY` in the file, and run with the below:
+> ```bash
+> php google_gemini.php   # this asks the question Who is Donald Trump?
+> ```
+> Or you can also follow the Quick Start below
+
 ## ✍️ Credits
 
 Victor Chinonso Ugwu
